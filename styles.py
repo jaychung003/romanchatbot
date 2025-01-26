@@ -39,14 +39,30 @@ def apply_custom_styles():
             font-size: 1.2rem;
         }
 
-        .feedback-section {
+        /* Submit button styles */
+        button[data-testid="baseButton-primary"] {
             margin-top: 0.5rem;
-            padding-top: 0.5rem;
-            border-top: 1px solid rgba(49, 51, 63, 0.1);
+            width: 150px;
         }
 
-        .feedback-input {
+        .feedback-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-top: 1px solid rgba(49, 51, 63, 0.1);
+            background-color: rgba(49, 51, 63, 0.03);
+            border-radius: 0.5rem;
+        }
+
+        .stTextArea {
             margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Feedback headings */
+        .stMarkdown h5 {
+            margin-bottom: 0.5rem;
+            color: #262730;
+            font-size: 0.9rem;
         }
         </style>
     """, unsafe_allow_html=True)

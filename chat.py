@@ -9,16 +9,17 @@ class Feedback:
 
     def render(self):
         """Render feedback buttons and text input."""
-        col1, col2, col3 = st.columns([1, 1, 4])
+        st.markdown("##### How was this response?")
 
-        # Thumbs up/down buttons
+        # Thumbs up/down buttons in a row
+        col1, col2, _ = st.columns([1, 1, 4])
         with col1:
             if st.button("👍", key=f"{self.key_prefix}_up"):
                 st.session_state.chat_history[self.message_idx]["feedback"] = {
                     "rating": "positive",
                     "text": st.session_state.get(f"{self.key_prefix}_text", "")
                 }
-                st.success("Thanks for your feedback!")
+                st.success("Thanks for the positive feedback!")
 
         with col2:
             if st.button("👎", key=f"{self.key_prefix}_down"):
@@ -26,23 +27,30 @@ class Feedback:
                     "rating": "negative",
                     "text": st.session_state.get(f"{self.key_prefix}_text", "")
                 }
-                st.error("Thanks for your feedback!")
+                st.error("Thanks for the feedback! Please let us know how we can improve.")
 
-        # Text feedback
-        with col3:
-            feedback_text = st.text_input(
-                "Add feedback (optional)",
+        # Text feedback in a separate container
+        with st.container():
+            st.markdown("##### Additional Comments (optional)")
+            feedback_text = st.text_area(
+                "Share your thoughts about this response",
                 key=f"{self.key_prefix}_text",
-                label_visibility="collapsed"
+                label_visibility="collapsed",
+                placeholder="Enter your feedback here..."
             )
-            if feedback_text:
-                if "feedback" in st.session_state.chat_history[self.message_idx]:
-                    st.session_state.chat_history[self.message_idx]["feedback"]["text"] = feedback_text
+
+            if st.button("Submit Feedback", key=f"{self.key_prefix}_submit"):
+                if feedback_text:
+                    if "feedback" in st.session_state.chat_history[self.message_idx]:
+                        st.session_state.chat_history[self.message_idx]["feedback"]["text"] = feedback_text
+                    else:
+                        st.session_state.chat_history[self.message_idx]["feedback"] = {
+                            "rating": None,
+                            "text": feedback_text
+                        }
+                    st.success("Thank you for your detailed feedback!")
                 else:
-                    st.session_state.chat_history[self.message_idx]["feedback"] = {
-                        "rating": None,
-                        "text": feedback_text
-                    }
+                    st.info("Please enter some feedback text before submitting.")
 
 class ChatInterface:
     def __init__(self):
@@ -53,6 +61,7 @@ class ChatInterface:
         with st.chat_message(role):
             st.markdown(content)
             if role == "assistant" and message_idx is not None:
+                st.markdown("---")  # Add a separator line
                 Feedback(message_idx).render()
 
     def _process_user_input(self, user_input: str) -> str:
