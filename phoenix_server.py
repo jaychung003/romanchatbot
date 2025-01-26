@@ -70,7 +70,7 @@ if __name__ == "__main__":
         uvicorn.run(
             app,
             host="0.0.0.0",
-            port=6006,
+            port=6007,  # Changed from 6006 to 6007
             log_level="debug"
         )
     except Exception as e:

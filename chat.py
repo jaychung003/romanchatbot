@@ -54,7 +54,7 @@ class Feedback:
 
                 try:
                     response = client.post(
-                        "http://0.0.0.0:6006/v1/span_annotations?sync=false",
+                        "http://0.0.0.0:6007/v1/span_annotations?sync=false", # Updated port to 6007
                         json=annotation_payload,
                         headers={"Content-Type": "application/json"}
                     )

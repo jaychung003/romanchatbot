@@ -27,7 +27,7 @@ try:
 
     # Configure the OTLP exporter
     otlp_exporter = OTLPSpanExporter(
-        endpoint="http://0.0.0.0:6006/v1/traces",
+        endpoint="http://0.0.0.0:6007/v1/traces",  # Updated port to 6007
         headers={}  # Add any required headers here
     )
 
