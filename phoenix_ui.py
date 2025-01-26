@@ -1,8 +1,10 @@
 import os
+import json
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.templating import Jinja2Templates
 import uvicorn
 import httpx
 import logging
@@ -30,11 +32,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Get absolute path for templates
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+templates_dir = os.path.join(BASE_DIR, "templates")
+
+# Create templates directory if it doesn't exist
+os.makedirs(templates_dir, exist_ok=True)
+
+# Set up Jinja2 templates with absolute path
+templates = Jinja2Templates(directory=templates_dir)
+
 # Configure Phoenix server URL
 PHOENIX_SERVER_URL = "http://0.0.0.0:6007"
 
-@app.get("/")
-async def root():
+@app.get("/", response_class=HTMLResponse)
+async def root(request: Request):
     """Root endpoint serving the UI dashboard"""
     try:
         # Test connection to Phoenix server
@@ -42,17 +54,28 @@ async def root():
             response = await client.get(f"{PHOENIX_SERVER_URL}/health")
             if response.status_code == 200:
                 logger.info("Successfully connected to Phoenix server")
+                server_status = "Connected"
             else:
                 logger.warning("Phoenix server health check failed")
+                server_status = "Disconnected"
     except Exception as e:
         logger.error(f"Failed to connect to Phoenix server: {e}")
+        server_status = "Error"
 
-    return {
-        "status": "running",
-        "service": "Phoenix UI",
-        "version": "1.0.0",
-        "backend_url": PHOENIX_SERVER_URL
-    }
+    try:
+        return templates.TemplateResponse(
+            "dashboard.html",
+            {
+                "request": request,
+                "server_status": server_status,
+                "server_url": PHOENIX_SERVER_URL
+            }
+        )
+    except Exception as e:
+        logger.error(f"Template error: {str(e)}")
+        logger.error(f"Templates directory: {templates_dir}")
+        logger.error(f"Current working directory: {os.getcwd()}")
+        raise HTTPException(status_code=500, detail=f"Template error: {str(e)}")
 
 @app.get("/traces")
 async def get_traces():
