@@ -54,6 +54,7 @@ class Feedback:
                 }
 
                 try:
+                    # Update to use correct port and host
                     phoenix_url = "http://0.0.0.0:6007/v1/span_annotations?sync=false"
                     logger.info(f"Connecting to Phoenix server at {phoenix_url}")
                     response = client.post(
@@ -63,6 +64,8 @@ class Feedback:
                     )
                     if response.status_code != 200:
                         logger.warning(f"Phoenix server returned status {response.status_code}: {response.text}")
+                    else:
+                        logger.info("Successfully sent feedback to Phoenix server")
                 except httpx.RequestError as e:
                     logger.warning(f"Could not connect to Phoenix server: {e}")
             except Exception as e:
