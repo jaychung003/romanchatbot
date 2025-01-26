@@ -16,7 +16,8 @@ class Feedback:
     def _send_phoenix_annotation(self, label: str, score: float, explanation: str = ""):
         """Send feedback annotation to Phoenix."""
         if not self.span_id:
-            return
+            st.warning("No active trace span found for feedback")
+            return False
 
         try:
             client = httpx.Client()
@@ -36,9 +37,13 @@ class Feedback:
 
             response = client.post(
                 "http://localhost:6006/v1/span_annotations?sync=false",
-                json=annotation_payload
+                json=annotation_payload,
+                headers={"Content-Type": "application/json"}
             )
-            return response.status_code == 200
+            if response.status_code != 200:
+                st.error(f"Failed to send feedback to Phoenix: {response.text}")
+                return False
+            return True
         except Exception as e:
             st.error(f"Failed to send feedback to Phoenix: {str(e)}")
             return False

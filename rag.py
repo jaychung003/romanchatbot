@@ -8,12 +8,23 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.retrievers import WikipediaRetriever
 from langchain.prompts import ChatPromptTemplate
 import chromadb
-from phoenix.otel import register
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from openinference.instrumentation.langchain import LangChainInstrumentor
 
-# Initialize OpenTelemetry and LangChain instrumentation
-tracer_provider = register()
-LangChainInstrumentor().instrument(tracer_provider=tracer_provider)
+# Initialize OpenTelemetry
+tracer_provider = TracerProvider()
+otlp_exporter = OTLPSpanExporter(
+    endpoint="http://localhost:6006/v1/traces"
+)
+span_processor = BatchSpanProcessor(otlp_exporter)
+tracer_provider.add_span_processor(span_processor)
+trace.set_tracer_provider(tracer_provider)
+
+# Initialize LangChain instrumentation
+LangChainInstrumentor().instrument()
 
 class RagSystem:
     def __init__(self):
