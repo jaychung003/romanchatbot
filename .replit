@@ -51,6 +51,7 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python phoenix_server.py"
+waitForPort = 6007
 
 [[ports]]
 localPort = 5000

@@ -38,6 +38,7 @@ class Feedback:
         if self.span_id:
             try:
                 client = httpx.Client(timeout=5.0)
+                logger.info(f"Sending feedback to Phoenix server for span {self.span_id}")
                 annotation_payload = {
                     "data": [{
                         "span_id": self.span_id,
@@ -53,13 +54,15 @@ class Feedback:
                 }
 
                 try:
+                    phoenix_url = "http://0.0.0.0:6007/v1/span_annotations?sync=false"
+                    logger.info(f"Connecting to Phoenix server at {phoenix_url}")
                     response = client.post(
-                        "http://0.0.0.0:6007/v1/span_annotations?sync=false", # Updated port to 6007
+                        phoenix_url,
                         json=annotation_payload,
                         headers={"Content-Type": "application/json"}
                     )
                     if response.status_code != 200:
-                        logger.warning(f"Phoenix server returned status {response.status_code}")
+                        logger.warning(f"Phoenix server returned status {response.status_code}: {response.text}")
                 except httpx.RequestError as e:
                     logger.warning(f"Could not connect to Phoenix server: {e}")
             except Exception as e:

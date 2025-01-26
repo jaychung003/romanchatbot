@@ -14,7 +14,11 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Create FastAPI app
-app = FastAPI()
+app = FastAPI(
+    title="Phoenix Server",
+    description="Feedback and tracing server for Roman Empire Chat",
+    version="1.0.0"
+)
 
 # Add CORS middleware
 app.add_middleware(
@@ -31,10 +35,12 @@ stored_traces = []
 
 @app.get("/health")
 async def health_check():
+    """Health check endpoint"""
     return {"status": "healthy"}
 
 @app.post("/v1/traces")
 async def receive_traces(request: Request):
+    """Endpoint to receive and store traces"""
     try:
         # Get raw bytes first
         body = await request.body()
@@ -57,6 +63,7 @@ async def receive_traces(request: Request):
 
 @app.post("/v1/span_annotations")
 async def receive_annotations(request: Request):
+    """Endpoint to receive and store feedback annotations"""
     try:
         feedback_data = await request.json()
         logger.info(f"Received feedback annotation: {feedback_data}")
@@ -76,8 +83,22 @@ async def get_traces():
     """Endpoint to view all stored traces"""
     return {"traces": stored_traces}
 
+# Add catch-all route to handle unsupported endpoints like GraphQL
+@app.api_route("/{path_name:path}", methods=["GET", "POST", "PUT", "DELETE"])
+async def catch_all(request: Request, path_name: str):
+    """Catch-all route handler for unsupported endpoints"""
+    logger.warning(f"Attempted to access unsupported endpoint: {path_name}")
+    raise HTTPException(
+        status_code=404,
+        detail=f"Endpoint '/{path_name}' not found. This server only supports /v1/traces and /v1/span_annotations endpoints."
+    )
+
 if __name__ == "__main__":
-    port = 6007  # Define port explicitly
+    # Explicitly define port and check environment
+    port = int(os.environ.get("PHOENIX_PORT", 6007))
+    if port != 6007:
+        logger.warning(f"Warning: Using non-standard port {port}. Standard port is 6007.")
+
     try:
         logger.info(f"Starting Phoenix server on port {port}...")
         uvicorn.run(
