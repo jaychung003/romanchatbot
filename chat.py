@@ -36,7 +36,7 @@ class Feedback:
             }
 
             response = client.post(
-                "http://localhost:6006/v1/span_annotations?sync=false",
+                "http://0.0.0.0:6006/v1/span_annotations?sync=false",
                 json=annotation_payload,
                 headers={"Content-Type": "application/json"}
             )
