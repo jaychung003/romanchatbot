@@ -1,8 +1,9 @@
 import os
 import logging
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+from typing import List, Dict, Any
 
 # Configure logging
 logging.basicConfig(
@@ -23,10 +24,45 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Health check endpoint
+# Store feedback and traces in memory
+stored_feedback = []
+stored_traces = []
+
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
+
+@app.post("/v1/traces")
+async def receive_traces(request: Request):
+    try:
+        trace_data = await request.json()
+        logger.info(f"Received trace data: {trace_data}")
+        stored_traces.append(trace_data)
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"Error processing trace: {str(e)}", exc_info=True)
+        raise
+
+@app.post("/v1/span_annotations")
+async def receive_annotations(request: Request):
+    try:
+        feedback_data = await request.json()
+        logger.info(f"Received feedback annotation: {feedback_data}")
+        stored_feedback.append(feedback_data)
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"Error processing feedback: {str(e)}", exc_info=True)
+        raise
+
+@app.get("/feedback")
+async def get_feedback():
+    """Endpoint to view all stored feedback"""
+    return {"feedback": stored_feedback}
+
+@app.get("/traces")
+async def get_traces():
+    """Endpoint to view all stored traces"""
+    return {"traces": stored_traces}
 
 if __name__ == "__main__":
     try:
