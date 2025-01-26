@@ -140,7 +140,8 @@ class ChatInterface:
                 response = self.rag_system.get_response(user_input)
                 return response
         except Exception as e:
-            st.error(f"Error getting response: {str(e)}")
+            logger.error(f"Error getting response: {str(e)}")
+            st.error("I apologize, but I encountered an error. Please try again.")
             return "I apologize, but I encountered an error while processing your question. Please try again."
 
     def render(self):
