@@ -8,9 +8,17 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.retrievers import WikipediaRetriever
 from langchain.prompts import ChatPromptTemplate
 import chromadb
+from phoenix.trace.langchain import LangChainInstrumentor
+import phoenix as px
+
+# Initialize Langchain auto-instrumentation
+LangChainInstrumentor().instrument()
 
 class RagSystem:
     def __init__(self):
+        # Initialize Phoenix session
+        self.session = px.launch_app()
+
         # Ensure persistence directory exists
         self.persist_directory = os.path.join(os.getcwd(), "chroma_db")
         os.makedirs(self.persist_directory, exist_ok=True)

@@ -1,11 +1,46 @@
 import streamlit as st
 from rag import RagSystem
 import time
+import httpx
+from opentelemetry import trace
 
 class Feedback:
     def __init__(self, message_idx):
         self.message_idx = message_idx
         self.key_prefix = f"feedback_{message_idx}"
+        self.current_span = trace.get_current_span()
+        self.span_id = None
+        if self.current_span:
+            self.span_id = self.current_span.get_span_context().span_id.to_bytes(8, "big").hex()
+
+    def _send_phoenix_annotation(self, label: str, score: float, explanation: str = ""):
+        """Send feedback annotation to Phoenix."""
+        if not self.span_id:
+            return
+
+        try:
+            client = httpx.Client()
+            annotation_payload = {
+                "data": [{
+                    "span_id": self.span_id,
+                    "name": "user feedback",
+                    "annotator_kind": "HUMAN",
+                    "result": {
+                        "label": label,
+                        "score": score,
+                        "explanation": explanation
+                    }
+                }]
+            }
+
+            response = client.post(
+                "http://localhost:6006/v1/span_annotations",
+                json=annotation_payload
+            )
+            return response.status_code == 200
+        except Exception as e:
+            st.error(f"Failed to send feedback to Phoenix: {str(e)}")
+            return False
 
     def render(self):
         """Render feedback buttons and text input."""
@@ -19,7 +54,8 @@ class Feedback:
                     "rating": "positive",
                     "text": st.session_state.get(f"{self.key_prefix}_text", "")
                 }
-                st.success("Thanks for the positive feedback!")
+                if self._send_phoenix_annotation("thumbs_up", 1.0):
+                    st.success("Thanks for the positive feedback!")
 
         with col2:
             if st.button("👎", key=f"{self.key_prefix}_down"):
@@ -27,7 +63,8 @@ class Feedback:
                     "rating": "negative",
                     "text": st.session_state.get(f"{self.key_prefix}_text", "")
                 }
-                st.error("Thanks for the feedback! Please let us know how we can improve.")
+                if self._send_phoenix_annotation("thumbs_down", 0.0):
+                    st.error("Thanks for the feedback! Please let us know how we can improve.")
 
         # Text feedback in a separate container
         with st.container():
@@ -43,12 +80,17 @@ class Feedback:
                 if feedback_text:
                     if "feedback" in st.session_state.chat_history[self.message_idx]:
                         st.session_state.chat_history[self.message_idx]["feedback"]["text"] = feedback_text
+                        # Send text feedback to Phoenix
+                        score = 1.0 if st.session_state.chat_history[self.message_idx]["feedback"].get("rating") == "positive" else 0.0
+                        if self._send_phoenix_annotation("text_feedback", score, feedback_text):
+                            st.success("Thank you for your detailed feedback!")
                     else:
                         st.session_state.chat_history[self.message_idx]["feedback"] = {
                             "rating": None,
                             "text": feedback_text
                         }
-                    st.success("Thank you for your detailed feedback!")
+                        if self._send_phoenix_annotation("text_feedback", 0.5, feedback_text):
+                            st.success("Thank you for your feedback!")
                 else:
                     st.info("Please enter some feedback text before submitting.")
 
