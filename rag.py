@@ -7,9 +7,13 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.retrievers import WikipediaRetriever
 from langchain.prompts import ChatPromptTemplate
+import chromadb
 
 class RagSystem:
     def __init__(self):
+        # Ensure persistence directory exists
+        self.persist_directory = os.path.join(os.getcwd(), "chroma_db")
+        os.makedirs(self.persist_directory, exist_ok=True)
         self.setup_rag_pipeline()
 
     def setup_rag_pipeline(self):
@@ -20,9 +24,12 @@ class RagSystem:
             self.embeddings = OpenAIEmbeddings()
             self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
 
+            # Configure ChromaDB client
+            chroma_client = chromadb.PersistentClient(path=self.persist_directory)
+
             # Get Wikipedia content about Roman Empire
             docs = self.retriever.invoke("Roman Empire")
-            
+
             # Split documents
             text_splitter = RecursiveCharacterTextSplitter(
                 chunk_size=1000,
@@ -30,10 +37,12 @@ class RagSystem:
             )
             splits = text_splitter.split_documents(docs)
 
-            # Create vector store
+            # Create vector store with persistence
             self.vectorstore = Chroma.from_documents(
                 documents=splits,
-                embedding=self.embeddings
+                embedding=self.embeddings,
+                client=chroma_client,
+                collection_name="roman_empire"
             )
 
             # Setup prompt template
@@ -41,7 +50,7 @@ class RagSystem:
                 ("system", """You are a knowledgeable historian specialized in the Roman Empire. 
                 Use the following context to answer questions about Roman history, culture, and society.
                 If you're not sure about something, admit it and stick to what's provided in the context.
-                
+
                 Context: {context}"""),
                 ("human", "{question}")
             ])
