@@ -33,6 +33,27 @@ app.add_middleware(
 stored_feedback = []
 stored_traces = []
 
+# Update port configuration
+PORT = int(os.environ.get("PHOENIX_PORT", 6007))
+logger.info(f"Phoenix server will start on port {PORT}")
+
+# Define routes in correct order (specific routes first, catch-all last)
+@app.get("/")
+async def root():
+    """Root endpoint that shows server status"""
+    logger.info("Accessed root endpoint")
+    return {
+        "status": "running",
+        "server": "Phoenix",
+        "version": "1.0.0",
+        "endpoints": {
+            "root": "/",
+            "traces": "/v1/traces",
+            "feedback": "/v1/span_annotations",
+            "health": "/health"
+        }
+    }
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
@@ -83,28 +104,25 @@ async def get_traces():
     """Endpoint to view all stored traces"""
     return {"traces": stored_traces}
 
-# Add catch-all route to handle unsupported endpoints like GraphQL
+# Move catch-all route to the end
 @app.api_route("/{path_name:path}", methods=["GET", "POST", "PUT", "DELETE"])
 async def catch_all(request: Request, path_name: str):
     """Catch-all route handler for unsupported endpoints"""
     logger.warning(f"Attempted to access unsupported endpoint: {path_name}")
+    if path_name == "":  # Empty path should redirect to root
+        return await root()
     raise HTTPException(
         status_code=404,
-        detail=f"Endpoint '/{path_name}' not found. This server only supports /v1/traces and /v1/span_annotations endpoints."
+        detail=f"Endpoint '/{path_name}' not found. Available endpoints: /, /health, /v1/traces, /v1/span_annotations"
     )
 
 if __name__ == "__main__":
-    # Explicitly define port and check environment
-    port = int(os.environ.get("PHOENIX_PORT", 6007))
-    if port != 6007:
-        logger.warning(f"Warning: Using non-standard port {port}. Standard port is 6007.")
-
     try:
-        logger.info(f"Starting Phoenix server on port {port}...")
+        logger.info(f"Starting Phoenix server on port {PORT}...")
         uvicorn.run(
             app,
             host="0.0.0.0",
-            port=port,
+            port=PORT,
             log_level="debug"
         )
     except Exception as e:
