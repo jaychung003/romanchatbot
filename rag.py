@@ -15,13 +15,10 @@ from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExport
 from openinference.instrumentation.langchain import LangChainInstrumentor
 
 # Initialize OpenTelemetry
-tracer_provider = TracerProvider()
-otlp_exporter = OTLPSpanExporter(
-    endpoint="http://localhost:6006/v1/traces"
-)
-span_processor = BatchSpanProcessor(otlp_exporter)
-tracer_provider.add_span_processor(span_processor)
-trace.set_tracer_provider(tracer_provider)
+provider = TracerProvider()
+exporter = OTLPSpanExporter(endpoint="http://localhost:6006/v1/traces")
+provider.add_span_processor(BatchSpanProcessor(exporter))
+trace.set_tracer_provider(provider)
 
 # Initialize LangChain instrumentation
 LangChainInstrumentor().instrument()

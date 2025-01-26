@@ -1387,6 +1387,47 @@ wheels = [
 ]
 
 [[package]]
+name = "openinference-instrumentation"
+version = "0.1.21"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "openinference-semantic-conventions" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-sdk" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/59/2c/ebe5c425bf4748732ab35518e64ee29aba6d5529b2f1dcdcf17358b128ba/openinference_instrumentation-0.1.21.tar.gz", hash = "sha256:208448c20e5639f56ee88c56da271ed34a225bb0cd21b2cb19e112cdf7b609cf", size = 16923 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/42/d9/c7e92ee32a13a305bf9b10a2a7b719056e56981c4e5af8b19452b23a102a/openinference_instrumentation-0.1.21-py3-none-any.whl", hash = "sha256:2fab04ff64658b1fffdc47c24c2d391c28c3318d58aceeb7bf42587df7ef4d05", size = 19377 },
+]
+
+[[package]]
+name = "openinference-instrumentation-langchain"
+version = "0.1.29"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "openinference-instrumentation" },
+    { name = "openinference-semantic-conventions" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-instrumentation" },
+    { name = "opentelemetry-semantic-conventions" },
+    { name = "wrapt", version = "1.16.0", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine == 'x86_64' and sys_platform == 'darwin'" },
+    { name = "wrapt", version = "1.17.2", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine != 'x86_64' or sys_platform != 'darwin'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/10/d2/185e4dd18431f35faba90482f511328d283e71ed12737e050664f7b5efeb/openinference_instrumentation_langchain-0.1.29.tar.gz", hash = "sha256:f6c10079c91f810cff39ff24c278e41d16df0c3706b230e1859f46cad20f8e0b", size = 45868 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/eb/ba/b0855a5f9bb565e462d85ecfad63d108c4c4bc209a34850623273f7dbcef/openinference_instrumentation_langchain-0.1.29-py3-none-any.whl", hash = "sha256:9faaedb62f90ca8099b48c0b9ded97fe109a646b756f4bf7c98479b500a8446d", size = 17043 },
+]
+
+[[package]]
+name = "openinference-semantic-conventions"
+version = "0.1.12"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5f/ae/0bf5e0dcda695fd66428da05880e137c67f6fcbc494b31edec72635dc9e1/openinference_semantic_conventions-0.1.12.tar.gz", hash = "sha256:f1a378429873128892f44505a994e2b29277a8dc1be9a56b1726b1069d70dcdc", size = 9240 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f0/fb/ea6c04bb12b2e5ade3faf32b24d45ffce9a21a1468ea179de96ceec1fb3d/openinference_semantic_conventions-0.1.12-py3-none-any.whl", hash = "sha256:3489262a148ba25b3203e500dedcf8955f0c68072f7e45db3a958c0d12585e62", size = 9061 },
+]
+
+[[package]]
 name = "opentelemetry-api"
 version = "1.20.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1429,6 +1470,25 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/3d/3d/f5956c1ff3509101ab4528cb23073d44d013519f862e8c1c42bcbc34a34b/opentelemetry_exporter_otlp_proto_grpc-1.20.0.tar.gz", hash = "sha256:6c06d43c3771bda1795226e327722b4b980fa1ca1ec9e985f2ef3e29795bdd52", size = 25104 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9e/a7/ce3ba7618887c08835c2f9c2fcfc4fcc46d9af7b62e2d2c9ea80d6604cf7/opentelemetry_exporter_otlp_proto_grpc-1.20.0-py3-none-any.whl", hash = "sha256:7c3f066065891b56348ba2c7f9df6ec635a712841cae0a36f2f6a81642ae7dec", size = 18262 },
+]
+
+[[package]]
+name = "opentelemetry-exporter-otlp-proto-http"
+version = "1.20.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "backoff" },
+    { name = "deprecated" },
+    { name = "googleapis-common-protos" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-exporter-otlp-proto-common" },
+    { name = "opentelemetry-proto" },
+    { name = "opentelemetry-sdk" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ec/22/3a0fd0602a8e43eaee5f06afbab3c24f6d763d38eab2028e45a63fc31e12/opentelemetry_exporter_otlp_proto_http-1.20.0.tar.gz", hash = "sha256:500f42821420fdf0759193d6438edc0f4e984a83e14c08a23023c06a188861b4", size = 13934 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d8/05/764b6ff9a70d9c5f749cea38072f830f577b0e01e144522522258924b626/opentelemetry_exporter_otlp_proto_http-1.20.0-py3-none-any.whl", hash = "sha256:03f6e768ad25f1c3a9586e8c695db4a4adf978f8546a1285fa962e16bfbb0bd6", size = 16850 },
 ]
 
 [[package]]
@@ -2102,6 +2162,11 @@ dependencies = [
     { name = "langchain-openai" },
     { name = "langchain-text-splitters" },
     { name = "openai" },
+    { name = "openinference-instrumentation-langchain" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-exporter-otlp-proto-http" },
+    { name = "opentelemetry-instrumentation" },
+    { name = "opentelemetry-sdk" },
     { name = "streamlit" },
     { name = "wikipedia" },
     { name = "xds-protos" },
@@ -2118,6 +2183,11 @@ requires-dist = [
     { name = "langchain-openai", specifier = ">=0.3.2" },
     { name = "langchain-text-splitters", specifier = ">=0.3.5" },
     { name = "openai", specifier = ">=1.60.1" },
+    { name = "openinference-instrumentation-langchain", specifier = ">=0.1.29" },
+    { name = "opentelemetry-api", specifier = ">=1.20.0" },
+    { name = "opentelemetry-exporter-otlp-proto-http", specifier = ">=1.20.0" },
+    { name = "opentelemetry-instrumentation", specifier = ">=0.41b0" },
+    { name = "opentelemetry-sdk", specifier = ">=1.20.0" },
     { name = "streamlit", specifier = ">=1.41.1" },
     { name = "wikipedia", specifier = ">=1.4.0" },
     { name = "xds-protos", specifier = ">=1.62.3" },
