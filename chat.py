@@ -3,50 +3,69 @@ from rag import RagSystem
 import time
 import httpx
 from opentelemetry import trace
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Feedback:
     def __init__(self, message_idx):
         self.message_idx = message_idx
         self.key_prefix = f"feedback_{message_idx}"
-        self.current_span = trace.get_current_span()
-        self.span_id = None
-        if self.current_span:
-            self.span_id = self.current_span.get_span_context().span_id.to_bytes(8, "big").hex()
+        try:
+            self.current_span = trace.get_current_span()
+            self.span_id = None
+            if self.current_span:
+                self.span_id = self.current_span.get_span_context().span_id.to_bytes(8, "big").hex()
+        except Exception as e:
+            logger.warning(f"Failed to get trace span: {e}")
+            self.current_span = None
+            self.span_id = None
 
     def _send_phoenix_annotation(self, label: str, score: float, explanation: str = ""):
         """Send feedback annotation to Phoenix."""
-        if not self.span_id:
-            st.warning("No active trace span found for feedback")
-            return False
+        # Store feedback locally even if Phoenix is not available
+        feedback_data = {
+            "label": label,
+            "score": score,
+            "explanation": explanation,
+            "timestamp": time.time()
+        }
+        if not hasattr(st.session_state, 'feedback_store'):
+            st.session_state.feedback_store = []
+        st.session_state.feedback_store.append(feedback_data)
 
-        try:
-            client = httpx.Client()
-            annotation_payload = {
-                "data": [{
-                    "span_id": self.span_id,
-                    "name": "user feedback",
-                    "annotator_kind": "HUMAN",
-                    "result": {
-                        "label": label,
-                        "score": score,
-                        "explanation": explanation
-                    },
-                    "metadata": {}
-                }]
-            }
+        # Try to send to Phoenix if tracing is available
+        if self.span_id:
+            try:
+                client = httpx.Client(timeout=5.0)
+                annotation_payload = {
+                    "data": [{
+                        "span_id": self.span_id,
+                        "name": "user feedback",
+                        "annotator_kind": "HUMAN",
+                        "result": {
+                            "label": label,
+                            "score": score,
+                            "explanation": explanation
+                        },
+                        "metadata": {}
+                    }]
+                }
 
-            response = client.post(
-                "http://0.0.0.0:6006/v1/span_annotations?sync=false",
-                json=annotation_payload,
-                headers={"Content-Type": "application/json"}
-            )
-            if response.status_code != 200:
-                st.error(f"Failed to send feedback to Phoenix: {response.text}")
-                return False
-            return True
-        except Exception as e:
-            st.error(f"Failed to send feedback to Phoenix: {str(e)}")
-            return False
+                try:
+                    response = client.post(
+                        "http://0.0.0.0:6006/v1/span_annotations?sync=false",
+                        json=annotation_payload,
+                        headers={"Content-Type": "application/json"}
+                    )
+                    if response.status_code != 200:
+                        logger.warning(f"Phoenix server returned status {response.status_code}")
+                except httpx.RequestError as e:
+                    logger.warning(f"Could not connect to Phoenix server: {e}")
+            except Exception as e:
+                logger.warning(f"Failed to send feedback to Phoenix: {e}")
+
+        return True
 
     def render(self):
         """Render feedback buttons and text input."""
@@ -60,8 +79,8 @@ class Feedback:
                     "rating": "positive",
                     "text": st.session_state.get(f"{self.key_prefix}_text", "")
                 }
-                if self._send_phoenix_annotation("thumbs_up", 1.0):
-                    st.success("Thanks for the positive feedback!")
+                self._send_phoenix_annotation("thumbs_up", 1.0)
+                st.success("Thanks for the positive feedback!")
 
         with col2:
             if st.button("👎", key=f"{self.key_prefix}_down"):
@@ -69,8 +88,8 @@ class Feedback:
                     "rating": "negative",
                     "text": st.session_state.get(f"{self.key_prefix}_text", "")
                 }
-                if self._send_phoenix_annotation("thumbs_down", 0.0):
-                    st.error("Thanks for the feedback! Please let us know how we can improve.")
+                self._send_phoenix_annotation("thumbs_down", 0.0)
+                st.error("Thanks for the feedback! Please let us know how we can improve.")
 
         # Text feedback in a separate container
         with st.container():
@@ -86,17 +105,16 @@ class Feedback:
                 if feedback_text:
                     if "feedback" in st.session_state.chat_history[self.message_idx]:
                         st.session_state.chat_history[self.message_idx]["feedback"]["text"] = feedback_text
-                        # Send text feedback to Phoenix
                         score = 1.0 if st.session_state.chat_history[self.message_idx]["feedback"].get("rating") == "positive" else 0.0
-                        if self._send_phoenix_annotation("text_feedback", score, feedback_text):
-                            st.success("Thank you for your detailed feedback!")
+                        self._send_phoenix_annotation("text_feedback", score, feedback_text)
+                        st.success("Thank you for your detailed feedback!")
                     else:
                         st.session_state.chat_history[self.message_idx]["feedback"] = {
                             "rating": None,
                             "text": feedback_text
                         }
-                        if self._send_phoenix_annotation("text_feedback", 0.5, feedback_text):
-                            st.success("Thank you for your feedback!")
+                        self._send_phoenix_annotation("text_feedback", 0.5, feedback_text)
+                        st.success("Thank you for your feedback!")
                 else:
                     st.info("Please enter some feedback text before submitting.")
 

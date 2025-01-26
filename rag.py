@@ -8,15 +8,43 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.retrievers import WikipediaRetriever
 from langchain.prompts import ChatPromptTemplate
 import chromadb
+import logging
 
-# Import Phoenix and OpenTelemetry components
-from phoenix.otel import register
-from openinference.instrumentation.langchain import LangChainInstrumentor
-from opentelemetry import trace
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
-# Initialize OpenTelemetry with Phoenix configuration
-tracer_provider = register()
-LangChainInstrumentor().instrument(tracer_provider=tracer_provider)
+# Initialize OpenTelemetry
+try:
+    from opentelemetry import trace
+    from opentelemetry.sdk.trace import TracerProvider
+    from opentelemetry.sdk.trace.export import BatchSpanProcessor
+    from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+    from openinference.instrumentation.langchain import LangChainInstrumentor
+
+    # Set up the tracer
+    tracer_provider = TracerProvider()
+
+    # Configure the OTLP exporter
+    otlp_exporter = OTLPSpanExporter(
+        endpoint="http://0.0.0.0:6006/v1/traces",
+        headers={}  # Add any required headers here
+    )
+
+    # Add BatchSpanProcessor with the OTLP exporter
+    span_processor = BatchSpanProcessor(otlp_exporter)
+    tracer_provider.add_span_processor(span_processor)
+
+    # Set the tracer provider
+    trace.set_tracer_provider(tracer_provider)
+
+    # Initialize LangChain instrumentation
+    LangChainInstrumentor().instrument()
+
+    logger.info("OpenTelemetry and LangChain instrumentation initialized successfully")
+except Exception as e:
+    logger.error(f"Failed to initialize OpenTelemetry: {str(e)}", exc_info=True)
+    logger.warning("Continuing without OpenTelemetry instrumentation")
 
 class RagSystem:
     def __init__(self):
