@@ -29,12 +29,13 @@ class Feedback:
                         "label": label,
                         "score": score,
                         "explanation": explanation
-                    }
+                    },
+                    "metadata": {}
                 }]
             }
 
             response = client.post(
-                "http://localhost:6006/v1/span_annotations",
+                "http://localhost:6006/v1/span_annotations?sync=false",
                 json=annotation_payload
             )
             return response.status_code == 200

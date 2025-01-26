@@ -1601,6 +1601,24 @@ wheels = [
 ]
 
 [[package]]
+name = "openinference-instrumentation-langchain"
+version = "0.1.29"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "openinference-instrumentation" },
+    { name = "openinference-semantic-conventions" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-instrumentation" },
+    { name = "opentelemetry-semantic-conventions" },
+    { name = "wrapt", version = "1.16.0", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine == 'x86_64' and sys_platform == 'darwin'" },
+    { name = "wrapt", version = "1.17.2", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine != 'x86_64' or sys_platform != 'darwin'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/10/d2/185e4dd18431f35faba90482f511328d283e71ed12737e050664f7b5efeb/openinference_instrumentation_langchain-0.1.29.tar.gz", hash = "sha256:f6c10079c91f810cff39ff24c278e41d16df0c3706b230e1859f46cad20f8e0b", size = 45868 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/eb/ba/b0855a5f9bb565e462d85ecfad63d108c4c4bc209a34850623273f7dbcef/openinference_instrumentation_langchain-0.1.29-py3-none-any.whl", hash = "sha256:9faaedb62f90ca8099b48c0b9ded97fe109a646b756f4bf7c98479b500a8446d", size = 17043 },
+]
+
+[[package]]
 name = "openinference-semantic-conventions"
 version = "0.1.12"
 source = { registry = "https://pypi.org/simple" }
@@ -2376,6 +2394,7 @@ dependencies = [
     { name = "arize-phoenix" },
     { name = "arize-phoenix-otel" },
     { name = "chromadb" },
+    { name = "httpx" },
     { name = "langchain" },
     { name = "langchain-chroma" },
     { name = "langchain-community" },
@@ -2383,10 +2402,12 @@ dependencies = [
     { name = "langchain-openai" },
     { name = "langchain-text-splitters" },
     { name = "openai" },
+    { name = "openinference-instrumentation-langchain" },
     { name = "opentelemetry-api" },
     { name = "opentelemetry-sdk" },
     { name = "streamlit" },
     { name = "wikipedia" },
+    { name = "xds-protos" },
 ]
 
 [package.metadata]
@@ -2394,6 +2415,7 @@ requires-dist = [
     { name = "arize-phoenix", specifier = ">=7.9.2" },
     { name = "arize-phoenix-otel", specifier = ">=0.7.1" },
     { name = "chromadb", specifier = ">=0.5.23" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "langchain", specifier = ">=0.3.15" },
     { name = "langchain-chroma", specifier = ">=0.2.0" },
     { name = "langchain-community", specifier = ">=0.3.15" },
@@ -2401,10 +2423,12 @@ requires-dist = [
     { name = "langchain-openai", specifier = ">=0.3.2" },
     { name = "langchain-text-splitters", specifier = ">=0.3.5" },
     { name = "openai", specifier = ">=1.60.1" },
+    { name = "openinference-instrumentation-langchain", specifier = ">=0.1.29" },
     { name = "opentelemetry-api", specifier = ">=1.29.0" },
     { name = "opentelemetry-sdk", specifier = ">=1.29.0" },
     { name = "streamlit", specifier = ">=1.41.1" },
     { name = "wikipedia", specifier = ">=1.4.0" },
+    { name = "xds-protos", specifier = ">=1.70.0" },
 ]
 
 [[package]]
@@ -3229,6 +3253,19 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/6a/e1/0122853035b40b3f333bbb25f1939fc1045e21dd518f7f0922b60c156f7c/wrapt-1.17.2-cp313-cp313t-win32.whl", hash = "sha256:13e6afb7fe71fe7485a4550a8844cc9ffbe263c0f1a1eea569bc7091d4898555", size = 37986 },
     { url = "https://files.pythonhosted.org/packages/09/5e/1655cf481e079c1f22d0cabdd4e51733679932718dc23bf2db175f329b76/wrapt-1.17.2-cp313-cp313t-win_amd64.whl", hash = "sha256:eaf675418ed6b3b31c7a989fd007fa7c3be66ce14e5c3b27336383604c9da85c", size = 40750 },
     { url = "https://files.pythonhosted.org/packages/2d/82/f56956041adef78f849db6b289b282e72b55ab8045a75abad81898c28d19/wrapt-1.17.2-py3-none-any.whl", hash = "sha256:b18f2d1533a71f069c7f82d524a52599053d4c7166e9dd374ae2136b7f40f7c8", size = 23594 },
+]
+
+[[package]]
+name = "xds-protos"
+version = "1.70.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "grpcio" },
+    { name = "protobuf" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/61/fd/ddfe5837d42bd7bceada4dc1351beb6c9037e5cc8e49f8dedea94aed192c/xds_protos-1.70.0.tar.gz", hash = "sha256:a84985be52b45c003cf8f620c2c02c2abc97849abdf04d1df4eb50102c2a4c24", size = 493832 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c4/60/6eb0b6687e0ecefd537b9502b8016b085c100ec2cfea91672488b625a1fb/xds_protos-1.70.0-py3-none-any.whl", hash = "sha256:808703409966ee029ee5b4211ab85b7a2d863eb499fb7cc475b20119f297b45c", size = 1235660 },
 ]
 
 [[package]]
