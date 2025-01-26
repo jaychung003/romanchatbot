@@ -2566,7 +2566,7 @@ dependencies = [
     { name = "phoenix" },
     { name = "python-jose", extra = ["cryptography"] },
     { name = "streamlit" },
-    { name = "uvicorn" },
+    { name = "uvicorn", extra = ["standard"] },
     { name = "wikipedia" },
     { name = "xds-protos" },
 ]
@@ -2595,7 +2595,7 @@ requires-dist = [
     { name = "phoenix", specifier = ">=0.9.0" },
     { name = "python-jose", extras = ["cryptography"], specifier = ">=3.3.0" },
     { name = "streamlit", specifier = ">=1.41.1" },
-    { name = "uvicorn", specifier = ">=0.34.0" },
+    { name = "uvicorn", extras = ["standard"], specifier = ">=0.34.0" },
     { name = "wikipedia", specifier = ">=1.4.0" },
     { name = "xds-protos", specifier = ">=1.62.3" },
 ]

@@ -1,9 +1,10 @@
 import os
 import logging
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from typing import List, Dict, Any
+import json
 
 # Configure logging
 logging.basicConfig(
@@ -35,13 +36,24 @@ async def health_check():
 @app.post("/v1/traces")
 async def receive_traces(request: Request):
     try:
-        trace_data = await request.json()
-        logger.info(f"Received trace data: {trace_data}")
+        # Get raw bytes first
+        body = await request.body()
+        try:
+            # Try JSON decode first
+            trace_data = json.loads(body)
+        except UnicodeDecodeError:
+            # If Unicode decode fails, store raw bytes
+            trace_data = {"raw_data": str(body.hex())}
+        except json.JSONDecodeError:
+            # If JSON decode fails, store as string
+            trace_data = {"raw_data": body.decode('latin1')}
+
+        logger.info(f"Received trace data type: {type(trace_data)}")
         stored_traces.append(trace_data)
-        return {"status": "success"}
+        return {"status": "success", "message": "Trace data stored"}
     except Exception as e:
         logger.error(f"Error processing trace: {str(e)}", exc_info=True)
-        raise
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/v1/span_annotations")
 async def receive_annotations(request: Request):
@@ -49,10 +61,10 @@ async def receive_annotations(request: Request):
         feedback_data = await request.json()
         logger.info(f"Received feedback annotation: {feedback_data}")
         stored_feedback.append(feedback_data)
-        return {"status": "success"}
+        return {"status": "success", "message": "Feedback stored"}
     except Exception as e:
         logger.error(f"Error processing feedback: {str(e)}", exc_info=True)
-        raise
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/feedback")
 async def get_feedback():
@@ -65,12 +77,13 @@ async def get_traces():
     return {"traces": stored_traces}
 
 if __name__ == "__main__":
+    port = 6007  # Define port explicitly
     try:
-        logger.info("Starting Phoenix server...")
+        logger.info(f"Starting Phoenix server on port {port}...")
         uvicorn.run(
             app,
             host="0.0.0.0",
-            port=6007,  # Changed from 6006 to 6007
+            port=port,
             log_level="debug"
         )
     except Exception as e:

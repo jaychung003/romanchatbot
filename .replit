@@ -51,7 +51,6 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python phoenix_server.py"
-waitForPort = 6006
 
 [[ports]]
 localPort = 5000
@@ -60,3 +59,7 @@ externalPort = 80
 [[ports]]
 localPort = 6006
 externalPort = 3000
+
+[[ports]]
+localPort = 6007
+externalPort = 3001
