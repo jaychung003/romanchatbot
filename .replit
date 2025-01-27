@@ -17,30 +17,11 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Phoenix Server"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
 args = "Streamlit App"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Phoenix UI"
-
-[[workflows.workflow]]
-name = "Phoenix Server"
-author = "agent"
-
-[workflows.workflow.metadata]
-agentRequireRestartOnSave = false
-
-[[workflows.workflow.tasks]]
-task = "packager.installForAll"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python phoenix_server.py"
-waitForPort = 6007
+args = "Phoenix Combined"
 
 [[workflows.workflow]]
 name = "Streamlit App"
@@ -58,7 +39,7 @@ args = "streamlit run main.py --server.address 0.0.0.0 --server.port 8501"
 waitForPort = 8501
 
 [[workflows.workflow]]
-name = "Phoenix UI"
+name = "Phoenix Combined"
 author = "agent"
 
 [workflows.workflow.metadata]
@@ -69,8 +50,12 @@ task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python3 phoenix_ui.py"
+args = "python phoenix_combined.py"
 waitForPort = 6008
+
+[[ports]]
+localPort = 4317
+externalPort = 4200
 
 [[ports]]
 localPort = 5000

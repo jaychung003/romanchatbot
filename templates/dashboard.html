@@ -1,77 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Phoenix UI Dashboard</title>
+    <title>Roman Empire Chatbot Monitor</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        function refreshData() {
-            // Fetch traces
-            fetch('/traces')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('traces-container').textContent = 
-                        JSON.stringify(data, null, 2);
-                });
-
-            // Fetch feedback
-            fetch('/feedback')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('feedback-container').textContent = 
-                        JSON.stringify(data, null, 2);
-                });
-        }
-
-        // Refresh data every 5 seconds
-        setInterval(refreshData, 5000);
-        
-        // Initial load
-        document.addEventListener('DOMContentLoaded', refreshData);
-    </script>
 </head>
-<body class="bg-gray-100 p-8">
-    <div class="max-w-7xl mx-auto">
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <h1 class="text-3xl font-bold mb-4">Phoenix UI Dashboard</h1>
-            
-            <div class="flex items-center mb-4">
-                <div class="mr-4">
-                    Server Status: 
-                    <span class="px-2 py-1 rounded text-sm font-semibold
-                        {% if server_status == 'Connected' %}
-                            bg-green-100 text-green-800
-                        {% elif server_status == 'Error' %}
-                            bg-red-100 text-red-800
-                        {% else %}
-                            bg-yellow-100 text-yellow-800
-                        {% endif %}
-                    ">
-                        {{ server_status }}
-                    </span>
-                </div>
-                <div>
-                    Server URL: <span class="font-mono">{{ server_url }}</span>
-                </div>
+<body class="bg-gray-100">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold text-gray-900">
+                    Roman Empire Chatbot Monitor
+                </h1>
             </div>
-        </div>
+        </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Traces Section -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-xl font-semibold mb-4">Traces</h2>
-                <pre id="traces-container" class="bg-gray-50 p-4 rounded-lg overflow-auto max-h-96">
-                    Loading traces...
-                </pre>
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <!-- Status Card -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-medium text-gray-900">System Status</h2>
+                        <p class="mt-1 text-sm text-gray-500">
+                            Current state of monitoring services
+                        </p>
+                    </div>
+                    <div>
+                        <span class="px-3 py-1 text-sm rounded-full {% if server_status == 'Connected' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ server_status }}
+                        </span>
+                    </div>
+                </div>
             </div>
 
-            <!-- Feedback Section -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-xl font-semibold mb-4">Feedback</h2>
-                <pre id="feedback-container" class="bg-gray-50 p-4 rounded-lg overflow-auto max-h-96">
-                    Loading feedback...
-                </pre>
+            <!-- Phoenix Integration -->
+            {% if phoenix_url %}
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Phoenix Monitor</h2>
+                <iframe 
+                    src="{{ phoenix_url }}"
+                    class="w-full h-[800px] border-0 rounded"
+                    title="Phoenix Monitor"
+                ></iframe>
             </div>
-        </div>
+            {% else %}
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Phoenix Monitor</h2>
+                <p class="text-red-600">Phoenix UI is not available. Please check the server logs.</p>
+            </div>
+            {% endif %}
+        </main>
     </div>
+
+    <script>
+        // Refresh status periodically
+        setInterval(() => {
+            fetch('/health')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'healthy') {
+                        console.log('Monitoring system healthy');
+                    } else {
+                        console.error('Monitoring system unhealthy:', data.error);
+                    }
+                })
+                .catch(error => console.error('Health check failed:', error));
+        }, 30000);
+    </script>
 </body>
 </html>
