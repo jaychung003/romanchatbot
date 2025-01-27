@@ -35,21 +35,18 @@
             </div>
 
             <!-- Phoenix Integration -->
-            {% if phoenix_url %}
             <div class="bg-white rounded-lg shadow-sm p-6">
                 <h2 class="text-lg font-medium text-gray-900 mb-4">Phoenix Monitor</h2>
+                {% if server_status == 'Connected' %}
                 <iframe 
-                    src="{{ phoenix_url }}"
+                    src="{{ server_url }}"
                     class="w-full h-[800px] border-0 rounded"
                     title="Phoenix Monitor"
                 ></iframe>
-            </div>
-            {% else %}
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <h2 class="text-lg font-medium text-gray-900 mb-4">Phoenix Monitor</h2>
+                {% else %}
                 <p class="text-red-600">Phoenix UI is not available. Please check the server logs.</p>
+                {% endif %}
             </div>
-            {% endif %}
         </main>
     </div>
 

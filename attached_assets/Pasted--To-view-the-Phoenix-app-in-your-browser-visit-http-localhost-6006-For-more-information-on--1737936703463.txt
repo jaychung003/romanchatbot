@@ -1,0 +1,125 @@
+🌍 To view the Phoenix app in your browser, visit http://localhost:6006/
+📖 For more information on how to use Phoenix, check out https://docs.arize.com/phoenix
+2025-01-26 16:07:16,827 - __main__ - INFO - Phoenix initialized at http://localhost:6006/
+2025-01-26 16:07:19,373 - __main__ - ERROR - Template error: 'dashboard.html' not found in search path: '/Users/jaychung/roman_chatbot/templates'
+2025-01-26 16:07:19,373 - __main__ - ERROR - Templates directory: /Users/jaychung/roman_chatbot/templates
+2025-01-26 16:07:19,373 - __main__ - ERROR - Current working directory: /Users/jaychung/roman_chatbot
+^C(venv) (base) Jays-Mac:roman_chatbot jaychung$ 
+(venv) (base) Jays-Mac:roman_chatbot jaychung$ python phoenix_combined.py
+2025-01-26 16:08:51,828 - __main__ - INFO - Creating templates directory at /Users/jaychung/roman_chatbot/templates
+2025-01-26 16:08:51,828 - __main__ - INFO - Initializing Jinja2 templates
+/Users/jaychung/roman_chatbot/phoenix_combined.py:61: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+2025-01-26 16:08:51,828 - __main__ - INFO - Starting monitoring server...
+INFO:     Started server process [85202]
+INFO:     Waiting for application startup.
+2025-01-26 16:08:52,230 - phoenix.config - INFO - 📋 Ensuring phoenix working directory: /Users/jaychung/.phoenix
+2025-01-26 16:08:52,236 - phoenix.inferences.inferences - INFO - Dataset: phoenix_inferences_0c1a266d-151f-4f8d-876b-fd904109c66c initialized
+2025-01-26 16:08:53,501 - __main__ - INFO - Starting Phoenix session...
+2025-01-26 16:08:53,501 - phoenix.config - INFO - 📋 Ensuring phoenix working directory: /Users/jaychung/.phoenix
+2025-01-26 16:08:53,524 - alembic.runtime.migration - INFO - Context impl SQLiteImpl.
+2025-01-26 16:08:53,524 - alembic.runtime.migration - INFO - Will assume transactional DDL.
+2025-01-26 16:08:53,528 - alembic.runtime.migration - INFO - Running upgrade  -> cf03bd6bae1d, init
+2025-01-26 16:08:53,539 - alembic.runtime.migration - DEBUG - new branch insert cf03bd6bae1d
+2025-01-26 16:08:53,540 - alembic.runtime.migration - INFO - Running upgrade cf03bd6bae1d -> 10460e46d750, datasets
+2025-01-26 16:08:53,544 - alembic.runtime.migration - DEBUG - update cf03bd6bae1d to 10460e46d750
+2025-01-26 16:08:53,545 - alembic.runtime.migration - INFO - Running upgrade 10460e46d750 -> 3be8647b87d8, add token columns to spans table
+2025-01-26 16:08:53,546 - alembic.runtime.migration - DEBUG - update 10460e46d750 to 3be8647b87d8
+2025-01-26 16:08:53,546 - alembic.runtime.migration - INFO - Running upgrade 3be8647b87d8 -> cd164e83824f, users and tokens
+2025-01-26 16:08:53,549 - alembic.runtime.migration - DEBUG - update 3be8647b87d8 to cd164e83824f
+2025-01-26 16:08:53,550 - alembic.runtime.migration - INFO - Running upgrade cd164e83824f -> 4ded9e43755f, create project_session table
+2025-01-26 16:08:53,556 - alembic.runtime.migration - DEBUG - update cd164e83824f to 4ded9e43755f
+2025-01-26 16:08:53,558 - phoenix.server.app - INFO - Server umap params: UMAPParameters(min_dist=0.0, n_neighbors=30, n_samples=500)
+2025-01-26 16:08:53,588 - aiosqlite - DEBUG - executing <function aio_sqlite_engine.<locals>.async_creator.<locals>.<lambda> at 0x165eb80e0>
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - operation <function aio_sqlite_engine.<locals>.async_creator.<locals>.<lambda> at 0x165eb80e0> completed
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - executing functools.partial(<built-in method create_function of sqlean.dbapi2.Connection object at 0x165ceb130>, 'regexp', 2, <function SQLiteDialect_pysqlite.on_connect.<locals>.regexp at 0x165c2ea20>, deterministic=True)
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - operation functools.partial(<built-in method create_function of sqlean.dbapi2.Connection object at 0x165ceb130>, 'regexp', 2, <function SQLiteDialect_pysqlite.on_connect.<locals>.regexp at 0x165c2ea20>, deterministic=True) completed
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - executing functools.partial(<built-in method create_function of sqlean.dbapi2.Connection object at 0x165ceb130>, 'floor', 1, <built-in function floor>, deterministic=True)
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - operation functools.partial(<built-in method create_function of sqlean.dbapi2.Connection object at 0x165ceb130>, 'floor', 1, <built-in function floor>, deterministic=True) completed
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - executing functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA read_uncommitted', [])
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - operation functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA read_uncommitted', []) completed
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - executing functools.partial(<built-in method fetchall of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - operation functools.partial(<built-in method fetchall of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - executing functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - operation functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - executing functools.partial(<built-in method rollback of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - operation functools.partial(<built-in method rollback of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,589 - aiosqlite - DEBUG - executing functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA foreign_keys = ON;', [])
+2025-01-26 16:08:53,590 - aiosqlite - DEBUG - operation functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA foreign_keys = ON;', []) completed
+2025-01-26 16:08:53,590 - aiosqlite - DEBUG - executing functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,590 - aiosqlite - DEBUG - operation functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,590 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,590 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,590 - aiosqlite - DEBUG - executing functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA journal_mode = WAL;', [])
+2025-01-26 16:08:53,590 - aiosqlite - DEBUG - operation functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA journal_mode = WAL;', []) completed
+2025-01-26 16:08:53,590 - aiosqlite - DEBUG - executing functools.partial(<built-in method fetchall of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method fetchall of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA synchronous = OFF;', [])
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA synchronous = OFF;', []) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA cache_size = -32000;', [])
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA cache_size = -32000;', []) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA busy_timeout = 10000;', [])
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'PRAGMA busy_timeout = 10000;', []) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method fetchall of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method fetchall of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,591 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,592 - aiosqlite - DEBUG - executing functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'SAVEPOINT sa_savepoint_1', ())
+2025-01-26 16:08:53,592 - aiosqlite - DEBUG - operation functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'SAVEPOINT sa_savepoint_1', ()) completed
+2025-01-26 16:08:53,592 - aiosqlite - DEBUG - executing functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,592 - aiosqlite - DEBUG - operation functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,604 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,604 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,604 - aiosqlite - DEBUG - executing functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'SELECT DISTINCT user_roles.name \nFROM user_roles', ())
+2025-01-26 16:08:53,604 - aiosqlite - DEBUG - operation functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'SELECT DISTINCT user_roles.name \nFROM user_roles', ()) completed
+2025-01-26 16:08:53,604 - aiosqlite - DEBUG - executing functools.partial(<built-in method fetchmany of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 1)
+2025-01-26 16:08:53,604 - aiosqlite - DEBUG - operation functools.partial(<built-in method fetchmany of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 1) completed
+2025-01-26 16:08:53,604 - aiosqlite - DEBUG - executing functools.partial(<built-in method fetchall of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,604 - aiosqlite - DEBUG - operation functools.partial(<built-in method fetchall of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,604 - aiosqlite - DEBUG - executing functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,604 - aiosqlite - DEBUG - operation functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - executing functools.partial(<built-in method executemany of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'INSERT INTO user_roles (name) VALUES (?)', [('SYSTEM',), ('MEMBER',), ('ADMIN',)])
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - operation functools.partial(<built-in method executemany of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'INSERT INTO user_roles (name) VALUES (?)', [('SYSTEM',), ('MEMBER',), ('ADMIN',)]) completed
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - executing functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - operation functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - executing functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'RELEASE SAVEPOINT sa_savepoint_1', ())
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - operation functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'RELEASE SAVEPOINT sa_savepoint_1', ()) completed
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - executing functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,605 - aiosqlite - DEBUG - operation functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,606 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,606 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,606 - aiosqlite - DEBUG - executing functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'SAVEPOINT sa_savepoint_2', ())
+2025-01-26 16:08:53,606 - aiosqlite - DEBUG - operation functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'SAVEPOINT sa_savepoint_2', ()) completed
+2025-01-26 16:08:53,606 - aiosqlite - DEBUG - executing functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>)
+2025-01-26 16:08:53,606 - aiosqlite - DEBUG - operation functools.partial(<built-in method close of sqlean.dbapi2.Cursor object at 0x165db0ff0>) completed
+2025-01-26 16:08:53,606 - aiosqlite - DEBUG - executing functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>)
+2025-01-26 16:08:53,606 - aiosqlite - DEBUG - operation functools.partial(<built-in method cursor of sqlean.dbapi2.Connection object at 0x165ceb130>) completed
+2025-01-26 16:08:53,606 - aiosqlite - DEBUG - executing functools.partial(<built-in method execute of sqlean.dbapi2.Cursor object at 0x165db0ff0>, 'SELECT user_roles.name, user_roles.id \nFROM user_roles', ())
+2025-01-26 16:08:53,606 - aiosqlite - DEBUG - operation functools.partial(<built-i
