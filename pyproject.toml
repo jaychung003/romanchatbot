@@ -31,4 +31,5 @@ dependencies = [
     "jinja2>=3.1.5",
     "python-multipart>=0.0.20",
     "arize-phoenix>=3.22.0",
+    "openinference-instrumentation-openai>=0.1.18",
 ]

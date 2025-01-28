@@ -1648,6 +1648,25 @@ wheels = [
 ]
 
 [[package]]
+name = "openinference-instrumentation-openai"
+version = "0.1.18"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "openinference-instrumentation" },
+    { name = "openinference-semantic-conventions" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-instrumentation" },
+    { name = "opentelemetry-semantic-conventions" },
+    { name = "typing-extensions" },
+    { name = "wrapt", version = "1.16.0", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine == 'x86_64' and sys_platform == 'darwin'" },
+    { name = "wrapt", version = "1.17.2", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine != 'x86_64' or sys_platform != 'darwin'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/88/10/997be23fe2d837f4d8e6d50a3d7574b555b5bd3c4efd6665b71784a71da1/openinference_instrumentation_openai-0.1.18.tar.gz", hash = "sha256:a0b539056338cd020064a5391d6a9d9792a9e752ceab167fee00c6d2758508a0", size = 17937 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5e/57/c937c33b7ec40132335ecdf4ca2cbdf43cd5478d252418f85d8fa31b9ac9/openinference_instrumentation_openai-0.1.18-py3-none-any.whl", hash = "sha256:d34c4047211d375105016e706390a178609252aecddf52544425dd017ad8bb67", size = 23944 },
+]
+
+[[package]]
 name = "openinference-semantic-conventions"
 version = "0.1.12"
 source = { registry = "https://pypi.org/simple" }
@@ -2459,6 +2478,7 @@ dependencies = [
     { name = "langchain-text-splitters" },
     { name = "openai" },
     { name = "openinference-instrumentation-langchain" },
+    { name = "openinference-instrumentation-openai" },
     { name = "opentelemetry-api" },
     { name = "opentelemetry-exporter-otlp" },
     { name = "opentelemetry-exporter-otlp-proto-http" },
@@ -2490,6 +2510,7 @@ requires-dist = [
     { name = "langchain-text-splitters", specifier = ">=0.3.5" },
     { name = "openai", specifier = ">=1.60.1" },
     { name = "openinference-instrumentation-langchain", specifier = ">=0.1.29" },
+    { name = "openinference-instrumentation-openai", specifier = ">=0.1.18" },
     { name = "opentelemetry-api", specifier = ">=1.20.0" },
     { name = "opentelemetry-exporter-otlp", specifier = ">=1.20.0" },
     { name = "opentelemetry-exporter-otlp-proto-http", specifier = ">=1.20.0" },
