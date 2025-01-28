@@ -55,7 +55,11 @@ def init_phoenix():
 @app.on_event("startup")
 async def startup_event():
     """Initialize Phoenix on FastAPI startup"""
-    init_phoenix()
+    logger.info("Starting FastAPI application...")
+    if init_phoenix():
+        logger.info("Phoenix monitoring system initialized successfully")
+    else:
+        logger.warning("Failed to initialize Phoenix monitoring. Some features may be unavailable.")
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
@@ -107,6 +111,11 @@ def main():
     """Main entry point"""
     try:
         logger.info("Starting monitoring server...")
+        print("\n" + "="*50)
+        print("Starting Roman Empire Chatbot Monitoring Dashboard")
+        print("Access the dashboard at: http://localhost:6008")
+        print("="*50 + "\n")
+
         uvicorn.run(
             app,
             host="0.0.0.0",
