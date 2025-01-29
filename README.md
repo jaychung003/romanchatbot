@@ -16,7 +16,7 @@ source venv/bin/activate  # On Windows use: venv\Scripts\activate
 
 3. Install required packages:
 ```bash
-pip install arize-phoenix>=3.22.0 openinference-instrumentation-openai streamlit fastapi uvicorn jinja2 langchain-community wikipedia openai
+pip install arize-phoenix>=3.22.0 openinference-instrumentation-openai streamlit fastapi uvicorn jinja2 langchain-community wikipedia openai languchain-openai chromadb
 ```
 
 4. Set up your OpenAI API key as an environment variable:
