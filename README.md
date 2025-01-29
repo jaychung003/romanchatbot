@@ -65,4 +65,4 @@ This will start the chatbot interface at http://localhost:8501
 If you encounter any issues:
 1. Check the terminal output for error messages
 2. Ensure all dependencies are correctly installed
-3. Verify your OpenAI API key is valid and properly set
+3. Verify your OpenAI API key is valid and properly set# romanchatbot
