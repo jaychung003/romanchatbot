@@ -1,0 +1,4 @@
+__pycache__/
+venv/
+chroma_db/
+__pycache__/\nchroma_db/\n*.bin\n*.ipynb

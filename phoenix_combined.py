@@ -75,8 +75,6 @@ async def root(request: Request):
         )
     except Exception as e:
         logger.error(f"Template error: {str(e)}")
-        logger.error(f"Templates directory: {templates_dir}")
-        logger.error(f"Current working directory: {os.getcwd()}")
         return HTMLResponse(
             content=f"""
             <html>

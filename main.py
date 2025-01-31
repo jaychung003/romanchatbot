@@ -5,11 +5,17 @@ import logging
 import os
 import sys
 
-# Configure logging with more detailed formatting
+from phoenix.otel import register
+from openinference.instrumentation.openai import OpenAIInstrumentor
+
+tracer_provider = register()
+OpenAIInstrumentor().instrument(tracer_provider=tracer_provider)
+
+# Configure logging
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    stream=sys.stdout  # Ensure logs go to stdout for visibility
+    stream=sys.stdout
 )
 logger = logging.getLogger(__name__)
 
@@ -17,7 +23,6 @@ logger.info("Starting Roman Empire Chat application...")
 logger.info(f"Current working directory: {os.getcwd()}")
 logger.info(f"Python path: {sys.path}")
 
-# Page config
 st.set_page_config(
     page_title="Roman Empire Chat",
     page_icon="🏛️",
@@ -27,7 +32,6 @@ st.set_page_config(
 def main():
     try:
         logger.info("Initializing session state...")
-        # Initialize session state
         if 'chat_history' not in st.session_state:
             st.session_state.chat_history = []
 
@@ -36,31 +40,26 @@ def main():
             st.session_state.rag_system = RagSystem()
             logger.info("RAG system initialized successfully")
 
-        # Title and description
         st.title("🏛️ Roman Empire Chat")
         st.markdown("""
         Ask questions about the Roman Empire! This chatbot uses information from Wikipedia 
         to provide accurate answers about Roman history, culture, and more.
         """)
 
-        # Create chat interface
         logger.info("Creating chat interface...")
         chat_interface = ChatInterface()
 
-        # Add a clear button
         col1, col2 = st.columns([6, 1])
         with col2:
             if st.button("Clear Chat"):
                 st.session_state.chat_history = []
                 st.experimental_rerun()
 
-        # Display chat interface
         chat_interface.render()
-
     except Exception as e:
         logger.error(f"Error in main function: {str(e)}", exc_info=True)
         st.error("An error occurred while starting the application. Please check the logs for details.")
-        raise  # Re-raise the exception for full traceback
+        raise
 
 if __name__ == "__main__":
     try:
@@ -76,4 +75,4 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(f"Application startup error: {str(e)}", exc_info=True)
         st.error("Failed to start the application. Please check the logs for details.")
-        raise  # Re-raise the exception for full traceback
+        raise
